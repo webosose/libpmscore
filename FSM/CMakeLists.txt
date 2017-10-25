@@ -1,0 +1,22 @@
+# @@@LICENSE
+#
+#      Copyright (c) 2017 LG Electronics, Inc.
+#
+# Confidential computer software. Valid license from LG required for
+# possession, use or copying. Consistent with FAR 12.211 and 12.212,
+# Commercial Computer Software, Computer Software Documentation, and
+# Technical Data for Commercial Items are licensed to the U.S. Government
+# under vendor's standard commercial license.
+#
+# LICENSE@@@
+
+# Build the fsmsupport shared library
+
+file(GLOB SOURCE_LIB ./src/*.cpp)
+
+webos_add_compiler_flags(ALL -fPIC -std=c++11 -Wall -g)
+
+add_library(fsmsupport SHARED ${SOURCE_LIB})
+webos_build_library(NAME fsmsupport HEADERS "FSM/include/")
+
+install(DIRECTORY "include/" DESTINATION @WEBOS_INSTALL_INCLUDEDIR@ FILES_MATCHING PATTERN "*.h" PATTERN ".*" EXCLUDE)
