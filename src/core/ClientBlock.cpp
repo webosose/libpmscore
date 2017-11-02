@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2018 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -58,12 +58,13 @@ PmsErrorCode_t ClientBlock::Initialize()
 {
     PmsErrorCode_t err = kPmsSuccess;
     err = InitializeIpc();
-  /*  if (err != kPmsSuccess)
+    if (err != kPmsSuccess)
     {
         return err;
     }
 
-    isInitialized = true;*/
+    mIsInitialized = true;
+
     return err;
 }
 
@@ -78,24 +79,36 @@ PmsErrorCode_t ClientBlock::Start()
         return err;
 }
 
-PmsErrorCode_t ClientBlock::Deinitialize()
+PmsErrorCode_t ClientBlock::Stop()
 {
     PmsErrorCode_t err = kPmsSuccess;
 
-    //if (!isInitialized)
-      //return kPmsSuccess;
+    for(uint8_t i = 0; i < mIpc.size(); i++ )
+    {
+        err = mIpc[i]->Stop();
+    }
 
+    return err;
+}
+
+PmsErrorCode_t ClientBlock::Deinitialize()
+{
+    MSG_DEBUG("[%s]", __PRETTY_FUNCTION__);
+    PmsErrorCode_t err = kPmsSuccess;
     err = DeinitializeIpc();
-    /*if (err != kPmsSuccess)
+    if (err != kPmsSuccess)
     {
         return err;
     }
-    isInitialized = false;*/
+
+    mIsInitialized = false;
+
     return err;
 }
 
 PmsErrorCode_t ClientBlock::InitializeIpc()
 {
+    MSG_DEBUG("[%s]", __PRETTY_FUNCTION__);
     PmsErrorCode_t err = kPmsSuccess;
 
     for(uint8_t i = 0; i < mIpc.size(); i++ )
@@ -107,11 +120,14 @@ PmsErrorCode_t ClientBlock::InitializeIpc()
             return err;
         }
     }
+
     return kPmsSuccess;
 }
 
 PmsErrorCode_t ClientBlock::DeinitializeIpc()
 {
+    MSG_DEBUG("[%s]", __PRETTY_FUNCTION__);
+
     PmsErrorCode_t err = kPmsSuccess;
 
     for(uint8_t i = 0; i < mIpc.size(); i++ )

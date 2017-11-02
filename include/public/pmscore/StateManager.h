@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2018 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -43,6 +43,7 @@ public:
     }
 
     bool registerListener(StateEventListners *l);
+    bool unregisterListener(StateEventListners *l);
     bool processEvent(const std::string& eventName);
 
     ~StateManager() {
@@ -65,6 +66,7 @@ public:
     StateManager()
     {
         std::string logContext;
+        isStateMachineRunning = false;
 
         mpConfig = new PmsConfigLinux(PMS_CONF_FILE_PATH);
         PmsErrorCode_t err = kPmsSuccess;
@@ -84,6 +86,7 @@ public:
 private:
     std::set<StateEventListners *> mListeners;
     static FSM::CFiniteStateMachine* mFsm;
+    bool isStateMachineRunning;
 
     Logger* mpLog;
     PmsConfig* mpConfig;

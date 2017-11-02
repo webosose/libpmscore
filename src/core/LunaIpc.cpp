@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2018 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -32,7 +32,7 @@ PmsErrorCode_t LunaIpc::InitIpc()
     if (err == kPmsSuccess)
     {
         LSError lserror;
-    LSErrorInit(&lserror);
+        LSErrorInit(&lserror);
 
         if (!LSRegister(mServiceName.c_str(), &mpLsHandle, &lserror))
         return kPmsErrClientNotRegistered;
@@ -41,7 +41,7 @@ PmsErrorCode_t LunaIpc::InitIpc()
         {
             err = kPmsErrResponseTooLate;
             MSG_ERROR(err, "Could not register pms service name %s", mServiceName.c_str());
-        MSG_DEBUG("LUNASERVICE ERROR %d: %s (%s @ %s:%d)\n", lserror.error_code, lserror.message, lserror.func, lserror.file, lserror.line);
+            MSG_DEBUG("LUNASERVICE ERROR %d: %s (%s @ %s:%d)\n", lserror.error_code, lserror.message, lserror.func, lserror.file, lserror.line);
         }
         else
         {
@@ -137,6 +137,11 @@ PmsErrorCode_t LunaIpc::Stop()
 
     LSError lserror;
     LSErrorInit(&lserror);
+
+    for (uint8_t i=0; i<mIpcInterfaces.size(); i++)
+    {
+        err = ((IpcInterfaceBase *)mIpcInterfaces[i])->Stop();
+    }
 
     LSGmainDetach( mpLsHandle, &lserror);
 
