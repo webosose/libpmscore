@@ -23,8 +23,8 @@
 
 #define kPmsMsgCategoryRoot          (kPmsMsgCategoryOffset * 1)
 
-typedef uint32_t LunaCategory_t;    /** category */
-typedef uint32_t LunaContext_t;     /** this pointer */
+typedef unsigned int LunaCategory_t;    /** category */
+typedef unsigned int LunaContext_t;     /** this pointer */
 
 class PMSLunaCategoryContext
 {
