@@ -7,6 +7,25 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(pmscore)
 
+############################################################
+############################################################
+function(webos_add_test target_name app_dep)
+    get_property(SOURCES TARGET ${target_name} PROPERTY "SOURCES")
+    set(TST_SRC)
+    foreach(SRC ${SOURCES})
+        if(NOT ${SRC} MATCHES "main.cpp")
+            set(TST_SRC ${TST_SRC} ${CMAKE_CURRENT_SOURCE_DIR}/${SRC})
+        endif()
+    endforeach()
+
+    set (TST_APP_NAME ${target_name}_test)
+    set (TST_DEP ${app_dep} ${ARGN} ${GTEST_LIBRARIES} )
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+    add_subdirectory(${target_name}_test)
+endfunction()
+############################################################
+############################################################
 
 include(webOS/webOS)
 webos_modules_init(1 0 0 QUALIFIER RC7)
@@ -51,6 +70,7 @@ add_definitions(-DFSM_FILE_PATH="/var/PMS/rpi.fsm")
 file(GLOB SOURCE_FILES src/*/*.cpp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+#set(CMAKE_EXE_LINKER_FLAGS "-ldl")
 
 install(DIRECTORY "include/public/" DESTINATION @WEBOS_INSTALL_INCLUDEDIR@ FILES_MATCHING PATTERN "*.h" PATTERN ".*" EXCLUDE)
 
@@ -69,4 +89,7 @@ set(LIBS ${LS2_LDFLAGS}
 target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBS})
 add_subdirectory(FSM)
 
-
+#unit test for power manager service(${CMAKE_PROJECT_NAME})
+#for gtest framework
+#webos_use_gtest()
+#webos_add_test(${CMAKE_PROJECT_NAME} ${LIBS})
