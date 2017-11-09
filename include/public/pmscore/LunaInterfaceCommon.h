@@ -17,6 +17,7 @@
     Luna Classes and would be retrieved from the callback
     functions. This is a singleton class.
  */
+#include "LunaInterfaceBase.h"
 
 #define kPmsMsgCategoryMask           0x0FF00000
 #define kPmsMsgCategoryOffset         0x00100000
@@ -24,7 +25,8 @@
 #define kPmsMsgCategoryRoot          (kPmsMsgCategoryOffset * 1)
 
 typedef unsigned int LunaCategory_t;    /** category */
-typedef unsigned int LunaContext_t;     /** this pointer */
+
+typedef LunaInterfaceBase* LunaContext_t;     /** this pointer */
 
 class PMSLunaCategoryContext
 {
