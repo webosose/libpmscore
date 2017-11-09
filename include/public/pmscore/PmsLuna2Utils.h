@@ -130,7 +130,7 @@ inline bool parsePayload(const std::string &payload, pbnjson::JValue &object, co
     pbnjson::JDomParser parser;
 
     if (!parser.parse(payload, parseSchema)) {
-        if (strstr(parser.getError(), "Schema error") != '\0') {
+        if (strstr(parser.getError(), "Schema error") != NULL) {
             // notify this is a schema error, so that caller can make further
             // checks for throwing custom errors (particular key missing, etc)
             pbnjson::JSchema parseSchema = pbnjson::JSchema::AllSchema();
