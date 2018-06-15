@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2018 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -41,17 +41,31 @@ bool StateManager::init()
         return false;
     }
 
-    if (!mFsm->Start()) {iHandleLastError();return false;}
+    if (!mFsm->Start()) {
+        iHandleLastError();
+        return false;
+    }
 
+    isStateMachineRunning = true;
     return true;
 }
 
 bool StateManager::deinit() {
-    mFsm->Stop();
+    if(isStateMachineRunning) {
+        mFsm->Stop();
+        isStateMachineRunning = false;
+        MSG_INFO("State Machine Stopped");
+    }
+
+    return true;
 }
 
 bool StateManager::processEvent(const std::string& eventName)
 {
+    if(!isStateMachineRunning) {
+        return false;
+    }
+
     MSG_DEBUG("Process Event: %s", eventName.c_str());
 
     if (!mFsm->ProcessEvent(eventName.c_str(),0,0)) {
@@ -71,7 +85,6 @@ bool StateManager::notifyStateListeners(const std::string& statename)
         if(!retVal)
         {
             MSG_DEBUG("Notification failed!");
-            return retVal;
         }
     });
 
@@ -87,7 +100,6 @@ bool StateManager::notifyTransitionStateListeners(const std::string& nextState)
         if(!retVal)
         {
             MSG_DEBUG("Notification failed!");
-            return retVal;
         }
     });
 
@@ -104,8 +116,23 @@ bool StateManager::registerListener(StateEventListners *l)
     return true;
 }
 
+bool StateManager::unregisterListener(StateEventListners *l)
+{
+    MSG_INFO("Removing Listener");
+    if (!l) {
+        return false;
+    }
+
+    mListeners.erase(l);
+    return true;
+}
+
 bool StateManager::requestToSetState(const std::string& stateName)
 {
+    if(!isStateMachineRunning) {
+        return false;
+    }
+
     CFSMState *State = nullptr;
     State = mFsm->GetState(stateName.c_str());
     if (State == NULL)
@@ -121,14 +148,17 @@ bool StateManager::requestToSetState(const std::string& stateName)
 
 std::string StateManager::requestToGetState()
 {
+    if(!isStateMachineRunning) {
+        return "undefined";
+    }
+
     CFSMState *State = nullptr;
     State = mFsm->GetCurrentState();
 
     if (NULL == State)
     {
         MSG_INFO("State is Undefined !!!");
-        // TODO: decide ?? "undefined" or something, for plugin without statemachine
-        return "";
+        return "undefined";
     }
 
     std::string state = State->GetName();

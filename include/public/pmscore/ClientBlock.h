@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2018 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -29,30 +29,36 @@
 class ClientBlock
 {
 public:
-  static const char* const kPmsBlockName;
-  ClientBlock(PmsConfig* pConfig, GMainLoop* loopData);
+    ClientBlock(PmsConfig* pConfig, GMainLoop* loopData);
 
-  virtual ~ClientBlock()
-  {
-    for(uint8_t i = 0; i < mIpc.size(); i++ )
-      delete mIpc[i];
+    virtual ~ClientBlock()
+    {
+        for(uint8_t i = 0; i < mIpc.size(); i++ )
+            delete mIpc[i];
 
-    mIpc.clear();
+        mIpc.clear();
 
-    delete mpLog;
-    mpLog = nullptr;
-  }
+        delete mpLog;
+        mpLog = nullptr;
+    }
 
-  PmsErrorCode_t Initialize();
-  PmsErrorCode_t Deinitialize();
-  PmsErrorCode_t Start(); // decide how to use it //
+    PmsErrorCode_t Initialize();
+    PmsErrorCode_t Deinitialize();
+    PmsErrorCode_t Start();
+    PmsErrorCode_t Stop();
 
- private:
-  PmsErrorCode_t InitializeIpc();
-  PmsErrorCode_t DeinitializeIpc();
-  std::vector<IpcBase*> mIpc;
-  GMainLoop* mLoopData;
-  Logger* mpLog;
+private:
+    PmsErrorCode_t InitializeIpc();
+    PmsErrorCode_t DeinitializeIpc();
+
+public:
+    static const char* const kPmsBlockName;
+
+private:
+    std::vector<IpcBase*>    mIpc;
+    GMainLoop*               mLoopData;
+    Logger*                  mpLog;
+    bool                     mIsInitialized;
 };
 
 #endif //CLIENT_PMS_BLOCK_H
