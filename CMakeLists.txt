@@ -1,6 +1,6 @@
 # @@@LICENSE
 #
-#   Copyright (c) 2017 LG Electronics Inc. All Rights Reserved
+#   Copyright (c) 2017-2020 LG Electronics Inc. All Rights Reserved
 #
 # LICENSE@@@
 
@@ -61,7 +61,7 @@ include_directories(FSM/include)
 include_directories(include/public/pmscore)
 
 add_definitions(-DPMS_CONF_FILE_PATH="/var/PMS/pms.conf")
-add_definitions(-DFSM_FILE_PATH="/var/PMS/rpi.fsm")
+add_definitions(-DFSM_FILE_PATH="/var/PMS/pms.fsm")
 
 file(GLOB SOURCE_FILES src/*/*.cpp)
 
@@ -69,6 +69,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 #set(CMAKE_EXE_LINKER_FLAGS "-ldl")
 
 install(DIRECTORY "include/public/" DESTINATION @WEBOS_INSTALL_INCLUDEDIR@ FILES_MATCHING PATTERN "*.h" PATTERN ".*" EXCLUDE)
+install(DIRECTORY "include/internal/" DESTINATION @WEBOS_INSTALL_INCLUDEDIR@/pmscore FILES_MATCHING PATTERN "*.h" PATTERN ".*" EXCLUDE)
 
 add_library(${CMAKE_PROJECT_NAME} SHARED ${SOURCE_FILES})
 webos_build_library(NAME ${CMAKE_PROJECT_NAME})
