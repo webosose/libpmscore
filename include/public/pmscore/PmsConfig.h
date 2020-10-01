@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2019 LG Electronics, Inc.
+//      Copyright (c) 2019-2020 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -32,7 +32,11 @@ public:
       std::vector<std::string>* value) = 0;
 
 protected:
-  PmsConfig(const std::string pathToFile): pathToPmsConf_( pathToFile) { };
+  PmsConfig(const std::string pathToFile)
+      : pathToPmsConf_(pathToFile),
+        mpLog(NULL)
+  {
+  }
 
   //This is the string path to the pms config file
   const std::string pathToPmsConf_;
