@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017-2019 LG Electronics, Inc.
+//      Copyright (c) 2017-2020 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -45,7 +45,7 @@ PmsErrorCode_t LunaIpc::InitIpc()
         }
         else
         {
-            MSG_NOTICE("Service %s registered, mpLsHandle 0x%x", mServiceName.c_str(), mpLsHandle);
+            MSG_NOTICE("Service %s registered, mpLsHandle %p", mServiceName.c_str(), (void *)mpLsHandle);
         }
     }
 

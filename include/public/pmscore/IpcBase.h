@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2020 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -28,7 +28,11 @@ public:
   static const char* const kPmsIpcName;
   static const char* const kPmsIpcType;
 
-  virtual ~IpcBase() {};
+  virtual ~IpcBase()
+  {
+    delete mpLog;
+    mpLog = nullptr;
+  };
 
   const std::string& GetType()
   {
@@ -97,10 +101,10 @@ protected:
         const char* logCtxt = LOG_CONTEXT_DEBUG; //default logging context
 
         err = mpConfig->GetString(kPmsInterfaceName,
-        kPmsLogContext, &logContext);
-
+                                  kPmsLogContext, &logContext);
         if (err == kPmsSuccess)
-        logCtxt = logContext.c_str();
+          logCtxt = logContext.c_str();
+
         mpLog = new Logger(logCtxt);
     }
 
