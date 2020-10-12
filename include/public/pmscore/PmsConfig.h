@@ -24,6 +24,7 @@ class PmsConfig
 public:
   virtual ~PmsConfig()
   {
+    delete mpLog;
   }
 
   virtual PmsErrorCode_t GetString(const std::string& category, const std::string& key,
@@ -34,7 +35,7 @@ public:
 protected:
   PmsConfig(const std::string pathToFile)
       : pathToPmsConf_(pathToFile),
-        mpLog(NULL)
+        mpLog(new Logger(LOG_CONTEXT_DEBUG))
   {
   }
 
