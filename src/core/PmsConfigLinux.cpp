@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2020 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -21,7 +21,7 @@ PmsConfigLinux::PmsConfigLinux(const std::string pathToFile): PmsConfig(pathToFi
 
     if (g_key_file_load_from_file(mpGkey_, pathToFile.c_str(), G_KEY_FILE_NONE, &pGerr) == FALSE)
     {
-        MSG_DEBUG("Key file %s load error\n", pathToFile.c_str());
+        MSG_WARNING("Key file %s load error\n", pathToFile.c_str());
         if (pGerr)
         {
             errMsg = pGerr->message;
