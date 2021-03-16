@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017-2020 LG Electronics, Inc.
+//      Copyright (c) 2017-2021 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -25,6 +25,8 @@ PmsConfigLinux::PmsConfigLinux(const std::string pathToFile): PmsConfig(pathToFi
         if (pGerr)
         {
             errMsg = pGerr->message;
+            g_error_free(pGerr);
+            pGerr = nullptr;
         }
     }
 }
