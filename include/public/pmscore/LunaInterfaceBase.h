@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017 LG Electronics, Inc.
+//      Copyright (c) 2017-2021 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -29,7 +29,6 @@ public:
     mpLsHandle = 0;
   }
 
-  PmsErrorCode_t HandleLunaResponse( const char *pCommandName, LSMessage *pReply);
   bool CancelSubscription(LSHandle* pLsH, LSMessage* pLsMsg, void* pData);
 
 protected:
@@ -60,7 +59,6 @@ LunaInterfaceBase(PmsConfig* pConfig, LSHandle* pHandle): IpcInterfaceBase(pConf
 
 private:
   static CancelSubscriptionTable_t mCancelSubscriptionTable;
-  PmsConfig*  mpConfig;
   Logger* mpLog;
 
   const char* const kPmsInterfaceName = "LunaInterfacePMSRoot";
