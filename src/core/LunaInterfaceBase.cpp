@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017-2020 LG Electronics, Inc.
+//      Copyright (c) 2017-2021 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -38,7 +38,7 @@ LunaInterfaceBase::RegisterCancelSubscriptionCallback(LSMessage* pLsMsg, const C
 {
     MSG_DEBUG("LSMessage = %p", (void *)pLsMsg);
 
-    CancelSubscriptionFunction_t placeHolder;
+    CancelSubscriptionFunction_t placeHolder = nullptr;
     std::pair<CancelSubscriptionTable_t::iterator, bool> newItem;
     assert(callback);
     newItem = mCancelSubscriptionTable.insert(CancelSubscriptionTable_t::value_type(pLsMsg, placeHolder));

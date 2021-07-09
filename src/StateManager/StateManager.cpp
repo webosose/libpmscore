@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2017-2020 LG Electronics, Inc.
+//      Copyright (c) 2017-2021 LG Electronics, Inc.
 //
 // Confidential computer software. Valid license from LG required for
 // possession, use or copying. Consistent with FAR 12.211 and 12.212,
@@ -80,7 +80,7 @@ bool StateManager::processEvent(const std::string& eventName)
 
 bool StateManager::notifyStateListeners(const std::string& statename)
 {
-    bool retVal;
+    bool retVal = false;
     std::for_each(mListeners.begin(), mListeners.end(), [&](StateEventListners * l)
     {
         retVal = l->handleStateChange(statename);
@@ -95,7 +95,7 @@ bool StateManager::notifyStateListeners(const std::string& statename)
 
 bool StateManager::notifyTransitionStateListeners(const std::string& nextState)
 {
-    bool retVal;
+    bool retVal = false;
     std::for_each(mListeners.begin(), mListeners.end(), [&](StateEventListners * l)
     {
         retVal = l->handleTransitionState(nextState);
