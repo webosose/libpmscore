@@ -38,26 +38,13 @@ LunaInterfaceBase::RegisterCancelSubscriptionCallback(LSMessage* pLsMsg, const C
 {
     MSG_DEBUG("LSMessage = %p", (void *)pLsMsg);
 
-    CancelSubscriptionFunction_t placeHolder = nullptr;
-    std::pair<CancelSubscriptionTable_t::iterator, bool> newItem;
     assert(callback);
+    CancelSubscriptionFunction_t placeHolder = callback;
+    std::pair<CancelSubscriptionTable_t::iterator, bool> newItem;
     newItem = mCancelSubscriptionTable.insert(CancelSubscriptionTable_t::value_type(pLsMsg, placeHolder));
     if (newItem.second == false)
     {
         return false;
-    }
-
-    // We insert a placeholder and then assign it the functor value to
-    // avoid a deep copy of the functor object in insert.
-    // Ask Vitaly for an explanation if you want to understand more about this optimization.
-    try
-    {
-        newItem.first->second = callback;
-    }
-    catch (...)
-    {
-        mCancelSubscriptionTable.erase(newItem.first);
-        throw;
     }
     return true;
 }
